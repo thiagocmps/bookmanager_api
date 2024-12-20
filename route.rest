@@ -1,0 +1,87 @@
+GET http://localhost:5000/books/
+
+###
+
+GET http://localhost:5000/books/676296b1953abc171237b98a
+
+###
+
+POST http://localhost:5000/books/
+Content-Type: application/json
+
+{
+  "id": "string",
+  "selflink": "string",
+  "title": "string",
+  "subtitle": "string",
+  "authors": [
+    "string"
+  ],
+  "publisher": "string",
+  "description": "string",
+  "publishedDate": "string",
+  "pageCount": 0,
+  "categories": [
+    "string"
+  ],
+  "averageRating": 0,
+  "ratingsCount": 0,
+  "imageLinks": {
+    "smallThumbnail": "string",
+    "thumbnail": "string"
+  },
+  "previewLink": "string",
+  "buyLink": "string",
+  "webReaderLink": "string"
+}
+
+###
+
+PATCH http://localhost:5000/books/67595a793b95c15e652cde95
+Content-Type: application/json
+{
+  "id": "string",
+  "selflink": "string",
+  "title": "string",
+  "subtitle": "string",
+  "authors": [
+    "string"
+  ],
+  "publisher": "string",
+  "description": "string",
+  "publishedDate": "string",
+  "pageCount": 0,
+  "categories": [
+    "string"
+  ],
+  "averageRating": 0,
+  "ratingsCount": 0,
+  "imageLinks": {
+    "smallThumbnail": "string",
+    "thumbnail": "string"
+  },
+  "previewLink": "string",
+  "buyLink": "string",
+  "webReaderLink": "string"
+}
+
+###
+
+POST http://localhost:5000/users/register/
+Content-Type: application/json
+
+{
+    "username": "aaaaaaaaaa4a",
+    "password": "12345678",
+    "role": "Admin"
+}
+
+###
+
+POST http://localhost:5000/users/login/
+Content-Type: application/json
+
+{
+    "username": "aaaaaaaaaa3a",
+    "password": "12345678"
+}

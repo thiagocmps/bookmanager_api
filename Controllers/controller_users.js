@@ -13,7 +13,7 @@ const login = (req, res) => {
             if (result) {
               console.log(result);
               utilities.generateToken(
-                { user: req.body.username, role: req.body.role },
+                { username: req.body.username, role: user.role },
                 token => {
                   console.log(token);
                   res.status(200).json(token);

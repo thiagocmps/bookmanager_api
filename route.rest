@@ -71,9 +71,9 @@ POST http://localhost:5000/users/register/
 Content-Type: application/json
 
 {
-    "username": "aaaaaaaaaa4a",
-    "password": "12345678",
-    "role": "Admin"
+    "username": "Thiago_Souza_ADMIN",
+    "password": "123456789",
+    "role": "admin"
 }
 
 ###
@@ -82,6 +82,6 @@ POST http://localhost:5000/users/login/
 Content-Type: application/json
 
 {
-    "username": "aaaaaaaaaa3a",
-    "password": "12345678"
+    "username": "Thiago_Souza",
+    "password": "123456789"
 }

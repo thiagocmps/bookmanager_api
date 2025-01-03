@@ -11,7 +11,8 @@ userRouter.post('/login', function (req, res) {
 /* Register */
 userRouter.post('/register', [
     body('username').notEmpty().escape(), 
-    body('password').notEmpty().escape()
+    body('password').notEmpty().escape(),
+    body('email').notEmpty().escape() 
 ],  function (req, res) {
     const errors = validationResult(req); 
     if (errors.isEmpty()) {

@@ -13,7 +13,7 @@ const login = (req, res) => {
             if (result) {
               console.log(result);
               utilities.generateToken(
-                { username: req.body.username, role: user[0].role },
+                { username: req.body.username, role: user[0].role, id: user[0]._id },
                 token => {
                   console.log(token);
                   res.status(200).json(token);
@@ -41,7 +41,7 @@ const register = (req, res) => {
       const userToCreate = new modelUser({
         username: req.body.username,
         password: hash,
-        role: req.body.role || "user", // Default role is 'user'
+        role: req.body.role || "user",
       });
 
       // find duplicate users

@@ -12,7 +12,7 @@ userRouter.post('/login', function (req, res) {
 userRouter.post('/register', [
     body('username').notEmpty().escape(), 
     body('password').notEmpty().escape(),
-    body('email').notEmpty().escape() 
+    body('role').optional().escape()
 ],  function (req, res) {
     const errors = validationResult(req); 
     if (errors.isEmpty()) {

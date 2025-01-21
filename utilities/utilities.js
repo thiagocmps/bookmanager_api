@@ -1,7 +1,9 @@
 var jwt = require("jsonwebtoken");
 const modelUsers = require("../Models/model_users.js");
+const modelUserbooks = require("../Models/model_userbooks.js");
 let secret = "%)$2sF55Idf(Rm&jyPnkqAL^+8m4dSw)";
 const modelBooks = require("../Models/model_books.js");
+
 
 const generateToken = (user_info, callback) => {
   let token = jwt.sign(
@@ -9,10 +11,11 @@ const generateToken = (user_info, callback) => {
       data: user_info,
     },
     secret,
-    { expiresIn: "24h" }
+    { expiresIn: "1000h" }
   );
   return callback(token);
 };
+
 
 const validateToken = (token, callback) => {
   if (!token) {
@@ -22,39 +25,71 @@ const validateToken = (token, callback) => {
     if (error) {
       return callback(false, null);
     }
-
-    let loggedUser = decoded.data.user;
-
+    console.log("Decoded: ", decoded);
+    let loggedUser = decoded.data.username;
+    console.log("User Authorized: " + loggedUser);
+    console.log("Token: " + token);
     modelUsers
-      .find({ username: loggedUser })
+      .findOne({ username: loggedUser })
       .then(user => {
-        if (error || !user) {
+        if (!user) {
           return callback(false, null);
         }
+        console.log("User founded:", user);
         return callback(true, user);
       })
-      .catch((error) => {
-        res.status(400).send(error);
-      });
   });
 };
 
-/* MIDDLEWARE search books*/
+
+/* MIDDLEWARE search userbooks*/
 const getBookById = async function (req, res, next) {
-  let book;
+  let userbook;
   try {
-    book = await modelBooks.Books.findById(req.params.id);
-    if (book == null) {
-      return res.status(404).json({ message: "Cannot find book" });
+    userbook = await modelUserbooks.Userbooks.findById(req.params.id);
+    console.log("getBookById: " + userbook);
+    if (userbook == null) {
+      return res.status(404).json({ message: "Cannot find userbook" });
     }
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 
-  res.book = book;
+  res.userbook = userbook;
+  console.log("res.userbook: " + res.userbook);
+  console.log("userbook: " + userbook);
   next();
 };
 
+
+const isAdmin = function(req, res, next) {
+  if (req.loggedUser.role === "admin") {
+    return next();
+  } else {
+    return res.status(401).json({ message: "Not authorized" });
+  }
+};
+
+
+const auth = function(req, res, next) {
+    let exception = ["/users/login", "/users/register"];
+    if (exception.indexOf(req.url) >= 0) {
+      return next();
+    } else {
+      validateToken(req.headers.authorization, (result, user) => {
+        if (result) {
+          req.loggedUser = user;
+          console.log("logged user: " + user);
+          return next();
+        } else {
+          return res.status(401).json({ message: "Not authorized" });
+        }
+      });
+    }
+} 
+
+exports.isAdmin = isAdmin;
 exports.generateToken = generateToken;
 exports.validateToken = validateToken;
 exports.getBookById = getBookById;
+exports.auth = auth;

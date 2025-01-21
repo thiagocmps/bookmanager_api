@@ -46,10 +46,6 @@ const booksSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  ratingsCount: {
-    type: Number,
-    required: true,
-  },
   imageLinks: {
     smallThumbnail: {
       type: String,
@@ -60,18 +56,6 @@ const booksSchema = new mongoose.Schema({
       required: false,
     } 
   },
-  previewLink: {
-    type: String,
-    required: false,
-  },
-  buyLink: {
-    type: String,
-    requied: false,
-  },
-  webReaderLink: {
-    type: String,
-    requied: false,
-  }
 });
 
 const Books = mongoose.model("Books", booksSchema);

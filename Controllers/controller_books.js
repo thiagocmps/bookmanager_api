@@ -22,8 +22,8 @@ const createBook = async function (req, res, next) {
         bookId: existingBook.id,
         state: req.body.state,
         review: {
-          description: undefined,
-          rating: undefined,
+          description: null,
+          rating: null,
         },
       });
       await save2Userbooks.save();

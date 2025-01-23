@@ -42,8 +42,8 @@ bookRouter.post("/createbook", async function (req, res) {
   }
 });
 
-/* DELETE userbook */
-bookRouter.delete("/:id", utilities.getBookById, utilities.isAdmin, async function (req, res) {
+/* DELETE userbook ADMIN */
+bookRouter.delete("/admin/:id", utilities.getBookById, utilities.isAdmin, async function (req, res) {
     try {
       await res.userbook.deleteOne()
       res.json({ message: "Book deleted" });
@@ -51,6 +51,17 @@ bookRouter.delete("/:id", utilities.getBookById, utilities.isAdmin, async functi
       res.status(500).json({ message: error.message });
     }
   }
+);
+
+/* DELETE userbook */
+bookRouter.delete("/:id", utilities.getBookById, utilities.isAdmin, async function (req, res) {
+  try {
+    await res.userbook.deleteOne()
+    res.json({ message: "Book deleted" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
 );
 
 module.exports = bookRouter;

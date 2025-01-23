@@ -12,7 +12,7 @@ const booksSchema = new mongoose.Schema({
   },
   title: {
     type: String,
-    required: true,
+    required: false,
   },
   subtitle: {
     type: String,
@@ -20,31 +20,31 @@ const booksSchema = new mongoose.Schema({
   },
   authors: {
     type: Array,
-    required: true,
+    required: false,
   },
   publisher: {
     type: String,
-    required: true,
+    required: false,
   },
   description: {
     type: String,
-    required: true,
+    required: false,
   },
   publishedDate: {
     type: String,
-    required: true,
+    required: false,
   },
   pageCount: {
     type: Number,
-    required: true,
+    required: false,
   },
   categories: {
     type: Array,
-    required: true,
+    required: false,
   },
   averageRating: {
     type: Number,
-    required: true,
+    required: false,
   },
   imageLinks: {
     smallThumbnail: {

@@ -4,7 +4,18 @@ const ModelUserbooks = require("../Models/model_userbooks");
 const listAllUserbooks = async function (req, res) {
   ModelUserbooks.Userbooks.find()
     .then((list) => {
-      console.log("userId: " + req.loggedUser._id)
+      console.log("userId: " + req.loggedUser._id);
+      res.status(200).json(list);
+    })
+    .catch((error) => {
+      res.status(error);
+    });
+};
+
+const getUserBooksForLoggedInUser = async function (req, res) {
+  ModelUserbooks.Userbooks.find({ userId: req.loggedUser._id })
+    .then((list) => {
+      console.log("userId: " + req.loggedUser._id);
       res.status(200).json(list);
     })
     .catch((error) => {
@@ -18,8 +29,10 @@ const createBook = async function (req, res, next) {
     const existingBook = await ModelBooks.Books.findOne({ id: req.body.id });
     if (existingBook) {
       const save2Userbooks = new ModelUserbooks.Userbooks({
-        userId:req.loggedUser._id,
+        userId: req.loggedUser._id,
         bookId: existingBook.id,
+        thumbnail: req.body.thumbnail,
+        title: req.body.title,
         state: req.body.state,
         review: {
           description: null,
@@ -27,7 +40,9 @@ const createBook = async function (req, res, next) {
         },
       });
       await save2Userbooks.save();
-      return res.status(200).json({ message: "Book already exists, added to userbooks" });
+      return res
+        .status(200)
+        .json({ message: "Book already exists, added to userbooks" });
     } else {
       const book2save = new ModelBooks.Books({
         id: req.body.id,
@@ -40,14 +55,14 @@ const createBook = async function (req, res, next) {
         pageCount: req.body.pageCount,
         categories: req.body.categories,
         averageRating: req.body.averageRating,
-        imageLinks: {
-          smallThumbnail: req.body.smallThumbnail,
-          thumbnail: req.body.thumbnail,
-        },
+        thumbnail: req.body.thumbnail,
       });
+      
       const save2Userbooks = new ModelUserbooks.Userbooks({
         userId: req.loggedUser._id,
         bookId: book2save.id,
+        thumbnail: req.body.thumbnail,  
+        title: req.body.title,
         state: req.body.state,
         review: {
           description: null,
@@ -63,5 +78,6 @@ const createBook = async function (req, res, next) {
   }
 };
 
+exports.getUserBooksForLoggedInUser = getUserBooksForLoggedInUser;
 exports.createBook = createBook;
 exports.listAllUserbooks = listAllUserbooks;

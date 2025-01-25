@@ -46,16 +46,10 @@ const booksSchema = new mongoose.Schema({
     type: Number,
     required: false,
   },
-  imageLinks: {
-    smallThumbnail: {
-      type: String,
-      required: false,
-    },
-    thumbnail: {
-      type: String,
-      required: false,
-    } 
-  },
+  thumbnail: {
+    type: String,
+    required: false,
+  } 
 });
 
 const Books = mongoose.model("Books", booksSchema);

@@ -7,7 +7,7 @@ const utilities = require("./utilities/utilities");
 const books_routes = require("./Routes/route_books");
 const users_routes = require("./Routes/route_users");
 const urimongodb = process.env.MONGO_URI;
-const port = process.env.PORT;
+const port = process.env.PORT || 5000;
 const app = express();
 
 app.use(express.json());

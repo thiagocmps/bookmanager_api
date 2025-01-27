@@ -26,7 +26,20 @@ const getUserBooksForLoggedInUser = async function (req, res) {
 const createBook = async function (req, res, next) {
   try {
     console.log("userId: " + req.loggedUser._id);
+
+    const existingUserBook = await ModelUserbooks.Userbooks.findOne({
+      userId: req.loggedUser._id,
+      bookId: req.body.id,
+    });
+
+    if (existingUserBook) {
+      return res
+        .status(409) 
+        .json({ message: "Book already exists in userbooks" });
+    }
+
     const existingBook = await ModelBooks.Books.findOne({ id: req.body.id });
+
     if (existingBook) {
       const save2Userbooks = new ModelUserbooks.Userbooks({
         userId: req.loggedUser._id,
@@ -57,11 +70,11 @@ const createBook = async function (req, res, next) {
         averageRating: req.body.averageRating,
         thumbnail: req.body.thumbnail,
       });
-      
+
       const save2Userbooks = new ModelUserbooks.Userbooks({
         userId: req.loggedUser._id,
-        bookId: book2save.id,
-        thumbnail: req.body.thumbnail,  
+        bookId: req.body.id,
+        thumbnail: req.body.thumbnail,
         title: req.body.title,
         state: req.body.state,
         review: {
@@ -69,14 +82,18 @@ const createBook = async function (req, res, next) {
           rating: null,
         },
       });
+
+      await book2save.save();
       await save2Userbooks.save();
-      const newBook = await book2save.save();
-      res.status(201).json(newBook);
+
+      return res.status(201).json(book2save);
     }
   } catch (error) {
+    console.error(error);
     res.status(400).json({ message: error.message });
   }
 };
+
 
 exports.getUserBooksForLoggedInUser = getUserBooksForLoggedInUser;
 exports.createBook = createBook;
